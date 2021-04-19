@@ -1,15 +1,17 @@
 package com.github.davinpro.viewmodel;
 
-import javafx.event.ActionEvent;
+import com.github.davinpro.App;
+import java.io.IOException;
 import javafx.fxml.FXML;
 
 public class MainMenu {
 
   @FXML
-  public void openOptions(ActionEvent actionEvent) {
+  public void openOptions() {
   }
 
   @FXML
-  public void startGame(ActionEvent actionEvent) {
+  public void switchToSetup() throws IOException {
+    App.setRoot("Setup");
   }
 }
