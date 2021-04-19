@@ -12,7 +12,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
-public class Setup {
+public class SetupController {
 
   @FXML
   TextField txtfName;
@@ -32,7 +32,7 @@ public class Setup {
 
     FXMLLoader loader = getLoader("Game");
     Parent root = loader.load();
-    Game game = loader.getController();
+    GameController game = loader.getController();
     game.initialize(name, color);
     setRoot(root);
   }

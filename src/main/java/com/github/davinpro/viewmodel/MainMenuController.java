@@ -4,7 +4,7 @@ import com.github.davinpro.App;
 import java.io.IOException;
 import javafx.fxml.FXML;
 
-public class MainMenu {
+public class MainMenuController {
 
   @FXML
   public void openOptions() {
