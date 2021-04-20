@@ -3,9 +3,10 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@/com/github/davinpro/style sheets/darkmode.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.davinpro.viewmodel.Setup">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@/com/github/davinpro/style sheets/darkmode.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.davinpro.viewmodel.SetupController">
    <children>
       <GridPane layoutX="200.0" layoutY="200.0" prefHeight="70.0" prefWidth="200.0">
         <columnConstraints>
@@ -15,6 +16,7 @@
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" text="Name:" textFill="#eeeeee" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
@@ -23,12 +25,25 @@
                </GridPane.margin>
             </Label>
             <TextField fx:id="txtfName" promptText="Player 1" GridPane.columnIndex="1" />
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Snake Color:" textFill="#eeeeee" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Body Color:" textFill="#eeeeee" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <padding>
                   <Insets right="10.0" />
                </padding>
             </Label>
-            <ColorPicker fx:id="clrpSnakeColor" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ColorPicker fx:id="bodyColorPicker" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <value>
+                  <Color red="0.02394249476492405" green="0.7605262994766235" blue="0.19581204652786255" />
+               </value></ColorPicker>
+            <ColorPicker fx:id="headColorPicker" layoutX="110.0" layoutY="33.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <value>
+                  <Color red="0.9710526466369629" green="0.03776315972208977" blue="0.03776315972208977" />
+               </value>
+            </ColorPicker>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="38.0" layoutY="36.0" text="Head Color:" textFill="#eeeeee" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </Label>
          </children>
       </GridPane>
       <Label layoutX="239.0" layoutY="14.0" text="Setup" textFill="#006f14">

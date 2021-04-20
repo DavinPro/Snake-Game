@@ -38,6 +38,10 @@ public class App extends Application {
         return getLoader(fxml).load();
     }
 
+    public static Scene getScene() {
+        return scene;
+    }
+
     public static void main(String[] args) {
         launch();
     }

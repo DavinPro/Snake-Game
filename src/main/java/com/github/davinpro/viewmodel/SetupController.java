@@ -1,6 +1,7 @@
 package com.github.davinpro.viewmodel;
 
 import static com.github.davinpro.App.getLoader;
+import static com.github.davinpro.App.getScene;
 import static com.github.davinpro.App.setRoot;
 
 import com.github.davinpro.App;
@@ -18,7 +19,10 @@ public class SetupController {
   TextField txtfName;
 
   @FXML
-  ColorPicker clrpSnakeColor;
+  ColorPicker bodyColorPicker;
+
+  @FXML
+  ColorPicker headColorPicker;
 
   @FXML
   public void switchToMainMenu() throws IOException {
@@ -28,12 +32,14 @@ public class SetupController {
   @FXML
   public void startGame() throws IOException {
     String name = txtfName.getText();
-    Color color = clrpSnakeColor.getValue();
+    Color bodyColor = bodyColorPicker.getValue();
+    Color headColor = headColorPicker.getValue();
 
     FXMLLoader loader = getLoader("Game");
     Parent root = loader.load();
     GameController game = loader.getController();
-    game.initialize(name, color);
+    game.initialize(name, bodyColor, headColor);
     setRoot(root);
+    game.run(getScene());
   }
 }
