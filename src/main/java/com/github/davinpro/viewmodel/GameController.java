@@ -1,10 +1,16 @@
 package com.github.davinpro.viewmodel;
 
+import static com.github.davinpro.App.getLoader;
+import static com.github.davinpro.App.setRoot;
+
 import com.github.davinpro.model.Snake;
 import com.github.davinpro.model.Snake.Direction;
+import java.io.IOException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -32,6 +38,14 @@ public class GameController {
     timeline.getKeyFrames().add(new KeyFrame(Duration.millis(125), event -> {
       // Move snake
       snake.move();
+
+      if (snake.collided()) {
+        try {
+          endGame();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
     }));
   }
 
@@ -41,37 +55,47 @@ public class GameController {
     // only if the snake is not moving in the opposite direction and the
     // snake's direction has not yet been changed this animation frame
     scene.setOnKeyPressed(event -> {
-      switch (event.getCode()) {
-        case UP:
-        case W:
-          if (snake.getDirection() != Direction.DOWN) {
-            snake.setDirection(Direction.UP);
-          }
-          break;
-        case DOWN:
-        case S:
-          if (snake.getDirection() != Direction.UP) {
-            snake.setDirection(Direction.DOWN);
-          }
-          break;
-        case LEFT:
-        case A:
-          if (snake.getDirection() != Direction.RIGHT) {
-            snake.setDirection(Direction.LEFT);
-          }
-          break;
-        case RIGHT:
-        case D:
-          if (snake.getDirection() != Direction.LEFT) {
-            snake.setDirection(Direction.RIGHT);
-          }
-          break;
-        default:  // do nothing
-          break;
+      if (!snake.isChangingDir()) {
+        switch (event.getCode()) {
+          case UP:
+          case W:
+            if (snake.getDirection() != Direction.DOWN) {
+              snake.setDirection(Direction.UP);
+            }
+            break;
+          case DOWN:
+          case S:
+            if (snake.getDirection() != Direction.UP) {
+              snake.setDirection(Direction.DOWN);
+            }
+            break;
+          case LEFT:
+          case A:
+            if (snake.getDirection() != Direction.RIGHT) {
+              snake.setDirection(Direction.LEFT);
+            }
+            break;
+          case RIGHT:
+          case D:
+            if (snake.getDirection() != Direction.LEFT) {
+              snake.setDirection(Direction.RIGHT);
+            }
+            break;
+        }
       }
     });
 
     timeline.play();
   }
 
+  private void endGame() throws IOException {
+    timeline.stop();
+
+    FXMLLoader loader = getLoader("EndScreen");
+    Parent root = loader.load();
+    setRoot(root);
+
+    EndScreenController endScreen = loader.getController();
+    endScreen.setName(name.isBlank() ? "Player 1" : name);
+  }
 }
