@@ -17,7 +17,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("MainMenu"), 640, 480);
         stage.setScene(scene);
         stage.show();
     }
@@ -26,9 +26,20 @@ public class App extends Application {
         scene.setRoot(loadFXML(fxml));
     }
 
+    public static void setRoot(Parent root) {
+      scene.setRoot(root);
+    }
+
+    public static FXMLLoader getLoader(String fxml) {
+      return new FXMLLoader(App.class.getResource("/com/github/davinpro/view/" + fxml + ".fxml"));
+    }
+
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+        return getLoader(fxml).load();
+    }
+
+    public static Scene getScene() {
+        return scene;
     }
 
     public static void main(String[] args) {

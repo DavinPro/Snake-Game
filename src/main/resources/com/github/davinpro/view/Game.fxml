@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" stylesheets="@/com/github/davinpro/style sheets/darkmode.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.davinpro.viewmodel.GameController">
+   <HBox alignment="CENTER">
+      <Pane fx:id="gamePane" prefHeight="800.0" prefWidth="800.0" />
+   </HBox>
+</VBox>
