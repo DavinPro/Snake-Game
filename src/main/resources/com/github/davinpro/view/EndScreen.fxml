@@ -18,10 +18,21 @@
  <font>
    <Font size="24.0" />
  </font>
+      <VBox.margin>
+         <Insets top="20.0" />
+      </VBox.margin>
 </Label>
+   <Label fx:id="score" text="Score: 0" textFill="#0c8618">
+      <font>
+         <Font size="24.0" />
+      </font>
+      <VBox.margin>
+         <Insets top="20.0" />
+      </VBox.margin>
+   </Label>
 <Button mnemonicParsing="false" onAction="#switchToMainMenu" text="Menu">
       <VBox.margin>
-         <Insets top="200.0" />
+         <Insets top="160.0" />
       </VBox.margin>
    </Button>
 </VBox>

@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -23,6 +24,9 @@ public class GameController {
 
   @FXML
   Pane gamePane;
+
+  @FXML
+  Label score;
 
   public static final int GRID_SIZE = 20;
   private static final int NUM_FRUITS = 4;
@@ -66,6 +70,9 @@ public class GameController {
       // Check if Snake collides with fruits
       for (Circle fruit : fruits) {
         if (snake.ateFruit(fruit)) {
+          // Increase Score
+          score.setText("Score: " + (Integer.parseInt(score.getText().substring(7)) + 1));
+
           // Grow the Snake
           snake.grow();
 
@@ -129,5 +136,6 @@ public class GameController {
 
     EndScreenController endScreen = loader.getController();
     endScreen.setName(name.isBlank() ? "Player 1" : name);
+    endScreen.setScore(score.getText());
   }
 }

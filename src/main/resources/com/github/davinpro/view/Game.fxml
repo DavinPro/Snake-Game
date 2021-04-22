@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" stylesheets="@/com/github/davinpro/style sheets/darkmode.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.davinpro.viewmodel.GameController">
-   <HBox alignment="CENTER">
+<HBox alignment="CENTER" stylesheets="@/com/github/davinpro/style sheets/darkmode.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.davinpro.viewmodel.GameController">
+   <VBox alignment="CENTER">
+      <AnchorPane prefHeight="25.0" prefWidth="800.0">
+         <Label fx:id="score" text="Score: 0" textFill="#0c8618">
+            <font>
+               <Font name="System Bold" size="24.0" />
+            </font>
+         </Label>
+      </AnchorPane>
       <Pane fx:id="gamePane" prefHeight="800.0" prefWidth="800.0" />
-   </HBox>
-</VBox>
+   </VBox>
+</HBox>

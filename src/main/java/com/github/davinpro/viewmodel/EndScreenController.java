@@ -10,8 +10,15 @@ public class EndScreenController {
   @FXML
   Label name;
 
+  @FXML
+  Label score;
+
   public void setName(String name) {
     this.name.setText(name);
+  }
+
+  public void setScore(String score) {
+    this.score.setText(score);
   }
 
   @FXML
