@@ -3,9 +3,11 @@ package com.github.davinpro.viewmodel;
 import static com.github.davinpro.App.getLoader;
 import static com.github.davinpro.App.setRoot;
 
+import com.github.davinpro.model.Fruit;
 import com.github.davinpro.model.Snake;
 import com.github.davinpro.model.Snake.Direction;
 import java.io.IOException;
+import java.util.ArrayList;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -14,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 public class GameController {
@@ -21,29 +24,58 @@ public class GameController {
   @FXML
   Pane gamePane;
 
+  public static final int GRID_SIZE = 20;
+  private static final int NUM_FRUITS = 4;
+
   private Timeline timeline;
   private String name;
   private Snake snake;
+  private ArrayList<Circle> fruits;
 
   public void initialize(String name, Color bodyColor, Color headColor) {
     this.name = name;
 
-    gamePane.setStyle("-fx-background-color: #0F0F0F;");
-
     this.snake = new Snake(bodyColor, headColor, gamePane.getPrefWidth(), gamePane.getPrefHeight());
     snake.draw(gamePane);
+
+    this.fruits = new ArrayList<>();
+    for (int i = 0; i < NUM_FRUITS; i++) {
+      int x = ((int) (Math.random() * (gamePane.getPrefWidth() / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2;
+      int y = ((int) (Math.random() * (gamePane.getPrefHeight() / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2;
+
+      this.fruits.add(new Circle(x, y, Fruit.RADIUS, Fruit.COLOR));
+    }
+    gamePane.getChildren().addAll(fruits);
+
+    gamePane.setStyle("-fx-background-color: #0F0F0F;");
 
     timeline = new Timeline();
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.getKeyFrames().add(new KeyFrame(Duration.millis(125), event -> {
-      // Move snake
       snake.move();
 
+      // Check if Snake collides with itself or pane bounds
       if (snake.collided()) {
         try {
           endGame();
         } catch (IOException e) {
           e.printStackTrace();
+        }
+      }
+
+      // Check if Snake collides with fruits
+      for (Circle fruit : fruits) {
+        if (snake.ateFruit(fruit)) {
+          // Grow the Snake
+          snake.grow();
+
+          // Move fruit, ensuring the new location is not occupied by the snake
+          do {
+            fruit.setCenterX(((int) (Math.random() * (gamePane.getPrefWidth() / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2f);
+            fruit.setCenterY(((int) (Math.random() * (gamePane.getPrefHeight() / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2f);
+          }
+          while (snake.onPoint(fruit.getCenterX(), fruit.getCenterY()));
+
         }
       }
     }));

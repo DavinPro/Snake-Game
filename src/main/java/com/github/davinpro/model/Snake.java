@@ -1,14 +1,21 @@
 package com.github.davinpro.model;
 
+import static com.github.davinpro.viewmodel.GameController.GRID_SIZE;
+
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+/**
+ * A Snake is an entity that can be drawn on a {@link Pane}.
+ * A Snake is made of a number of body segments, and can move across the pane in
+ * a specified direction.
+ */
 public class Snake {
 
-  private static final int SEGMENT_RADIUS = 10;
+  private static final int SEGMENT_RADIUS = GRID_SIZE / 2;
   private static final int NUM_STARTING_SEGMENTS = 6;
 
   public enum Direction {UP, DOWN, LEFT, RIGHT}
@@ -24,6 +31,16 @@ public class Snake {
   private final double boundX;
   private final double boundY;
 
+  private boolean grow = false;
+
+  /**
+   * Creates a new instance of Snake with the specifed body color and head color.
+   *
+   * @param bodyColor The {@link Color} to use when drawing the Snake body
+   * @param headColor The {@link Color} to use when drawing the Snake head
+   * @param boundX    The bound in the x direction this Snake can move to without colliding
+   * @param boundY    The bound in the y direction this Snake can move to without colliding
+   */
   public Snake(Color bodyColor, Color headColor, double boundX, double boundY) {
     this.bodyColor = bodyColor;
     this.headColor = headColor;
@@ -75,7 +92,15 @@ public class Snake {
     }
 
     // Remove tail and make it the new head, rather than move every body segment
-    Circle newHead = body.remove(body.size() - 1);
+    Circle newHead;
+    if (grow) {
+      newHead = new Circle(SEGMENT_RADIUS);
+      ((Pane)body.get(0).getParent()).getChildren().add(newHead);
+      grow = false;
+    } else {
+      newHead = body.remove(body.size() - 1);
+    }
+
     newHead.setFill(headColor);
     newHead.setCenterX(centerX);
     newHead.setCenterY(centerY);
@@ -85,19 +110,16 @@ public class Snake {
     changingDir = false;
   }
 
-  public void setDirection(Direction direction) {
-    this.direction = direction;
-    changingDir = true;
-  }
+  /**
+   * Set this {@link Snake} to increase length by one segment next time the move method is called.
+   */
+  public void grow() { grow = true; }
 
-  public Direction getDirection() {
-    return this.direction;
-  }
-
-  public boolean isChangingDir() {
-    return changingDir;
-  }
-
+  /**
+   * A method to determine if a this {@link Snake} has collided with it's bounds or with itself.
+   *
+   * @return true if this {@link Snake} has collided, otherwise false
+   */
   public boolean collided() {
     double x = body.get(0).getCenterX();
     double y = body.get(0).getCenterY();
@@ -113,5 +135,44 @@ public class Snake {
       }
     }
     return false;
+  }
+
+  /**
+   * A method to determine if a segment of this {@link Snake} is centered at coordinates (x, y).
+   *
+   * @param x The x coordinate of the point to check
+   * @param y The y coordinate of the point to check
+   * @return true if this {@link Snake} is on the point, otherwise false
+   */
+  public boolean onPoint(double x, double y) {
+    for (int i = 1; i < body.size() - 1; i++) {
+      if (body.get(i).getCenterX() == x && body.get(i).getCenterY() == y) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * A method to determine if the head of this {@link Snake} is on a fruit.
+   *
+   * @param fruit The fruit to check
+   * @return true if the head of this {@link Snake} is on the fruit.
+   */
+  public boolean ateFruit(Circle fruit) {
+    return body.get(0).getCenterX() == fruit.getCenterX() && body.get(0).getCenterY() == fruit.getCenterY();
+  }
+
+  public boolean isChangingDir() {
+    return changingDir;
+  }
+
+  public void setDirection(Direction direction) {
+    this.direction = direction;
+    changingDir = true;
+  }
+
+  public Direction getDirection() {
+    return this.direction;
   }
 }
