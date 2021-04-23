@@ -5,6 +5,8 @@ import static com.github.davinpro.App.getScene;
 import static com.github.davinpro.App.setRoot;
 
 import com.github.davinpro.App;
+import com.github.davinpro.SoundManager;
+import com.github.davinpro.SoundManager.Sound;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,11 +28,14 @@ public class SetupController {
 
   @FXML
   public void switchToMainMenu() throws IOException {
+    SoundManager.play(Sound.BUTTON_PRESS);
     App.setRoot("MainMenu");
   }
 
   @FXML
   public void startGame() throws IOException {
+    SoundManager.play(Sound.BUTTON_PRESS);
+
     String name = txtfName.getText();
     Color bodyColor = bodyColorPicker.getValue();
     Color headColor = headColorPicker.getValue();
@@ -41,5 +46,7 @@ public class SetupController {
     game.initialize(name, bodyColor, headColor);
     setRoot(root);
     game.run(getScene());
+
+    SoundManager.stop(Sound.MENU_MUSIC);
   }
 }

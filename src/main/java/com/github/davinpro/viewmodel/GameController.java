@@ -3,6 +3,8 @@ package com.github.davinpro.viewmodel;
 import static com.github.davinpro.App.getLoader;
 import static com.github.davinpro.App.setRoot;
 
+import com.github.davinpro.SoundManager;
+import com.github.davinpro.SoundManager.Sound;
 import com.github.davinpro.model.Fruit;
 import com.github.davinpro.model.Snake;
 import com.github.davinpro.model.Snake.Direction;
@@ -31,7 +33,9 @@ public class GameController {
   public static final int GRID_SIZE = 20;
   private static final int NUM_FRUITS = 4;
 
+  //private final SoundManager soundManager = SoundManager.getInstance();
   private Timeline timeline;
+
   private String name;
   private Snake snake;
   private ArrayList<Circle> fruits;
@@ -75,6 +79,9 @@ public class GameController {
 
           // Grow the Snake
           snake.grow();
+
+          // Play sound effect
+          SoundManager.play(Sound.EAT_FRUIT);
 
           // Move fruit, ensuring the new location is not occupied by the snake
           do {
@@ -129,6 +136,9 @@ public class GameController {
 
   private void endGame() throws IOException {
     timeline.stop();
+
+    SoundManager.play(Sound.GAME_OVER);
+    SoundManager.fadeInPlay(Sound.MENU_MUSIC, 15);
 
     FXMLLoader loader = getLoader("EndScreen");
     Parent root = loader.load();

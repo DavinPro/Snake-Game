@@ -1,5 +1,6 @@
 package com.github.davinpro;
 
+import com.github.davinpro.SoundManager.Sound;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +21,8 @@ public class App extends Application {
         scene = new Scene(loadFXML("MainMenu"), 640, 480);
         stage.setScene(scene);
         stage.show();
+
+        SoundManager.fadeInPlay(Sound.MENU_MUSIC, 10);
     }
 
     public static void setRoot(String fxml) throws IOException {
