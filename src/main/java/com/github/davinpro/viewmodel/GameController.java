@@ -10,6 +10,7 @@ import com.github.davinpro.model.Snake;
 import com.github.davinpro.model.Snake.Direction;
 import java.io.IOException;
 import java.util.ArrayList;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -30,11 +31,14 @@ public class GameController {
   @FXML
   Label score;
 
+  @FXML
+  Label timeLabel;
+
   public static final int GRID_SIZE = 20;
   private static final int NUM_FRUITS = 4;
 
-  //private final SoundManager soundManager = SoundManager.getInstance();
   private Timeline timeline;
+  private AnimationTimer timer;
 
   private String name;
   private Snake snake;
@@ -89,10 +93,20 @@ public class GameController {
             fruit.setCenterY(((int) (Math.random() * (gamePane.getPrefHeight() / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2f);
           }
           while (snake.onPoint(fruit.getCenterX(), fruit.getCenterY()));
-
         }
       }
     }));
+
+    timer = new AnimationTimer() {
+      private final long startTime = System.currentTimeMillis();
+
+      @Override
+      public void handle(long timestamp) {
+        long curTime = System.currentTimeMillis() - startTime;
+        timeLabel.setText(String.format("%dm %.1fs", ((curTime / 1000) / 60), (curTime / 1000.0) % 60));
+      }
+    };
+    timer.start();
   }
 
   public void run(Scene scene) {
@@ -136,6 +150,7 @@ public class GameController {
 
   private void endGame() throws IOException {
     timeline.stop();
+    timer.stop();
 
     SoundManager.play(Sound.GAME_OVER);
     SoundManager.fadeInPlay(Sound.MENU_MUSIC, 15);
@@ -146,6 +161,7 @@ public class GameController {
 
     EndScreenController endScreen = loader.getController();
     endScreen.setName(name.isBlank() ? "Player 1" : name);
-    endScreen.setScore(score.getText());
+    endScreen.setScore(score.getText().substring(7));
+    endScreen.setTime(timeLabel.getText());
   }
 }

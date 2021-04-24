@@ -15,6 +15,9 @@ public class EndScreenController {
   @FXML
   Label score;
 
+  @FXML
+  Label time;
+
   public void setName(String name) {
     this.name.setText(name);
   }
@@ -22,6 +25,8 @@ public class EndScreenController {
   public void setScore(String score) {
     this.score.setText(score);
   }
+
+  public void setTime(String time) { this.time.setText(time); }
 
   @FXML
   public void switchToMainMenu() throws IOException {
