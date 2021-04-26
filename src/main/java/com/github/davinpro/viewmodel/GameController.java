@@ -6,6 +6,7 @@ import static com.github.davinpro.App.setRoot;
 import com.github.davinpro.SoundManager;
 import com.github.davinpro.SoundManager.Sound;
 import com.github.davinpro.model.Fruit;
+import com.github.davinpro.model.Fruit.Type;
 import com.github.davinpro.model.Snake;
 import com.github.davinpro.model.Snake.Direction;
 import java.io.IOException;
@@ -20,7 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 public class GameController {
@@ -34,32 +34,47 @@ public class GameController {
   @FXML
   Label timeLabel;
 
+  public static double BOUND_X = 0.0;
+  public static double BOUND_Y = 0.0;
   public static final int GRID_SIZE = 20;
   private static final int NUM_FRUITS = 4;
+
+  // Percent chance a special fruit will spawn
+  private static final int SPECIAL_FRUIT_CHANCE = 10;
 
   private Timeline timeline;
   private AnimationTimer timer;
 
   private String name;
   private Snake snake;
-  private ArrayList<Circle> fruits;
+  private ArrayList<Fruit> fruits;
 
   public void initialize(String name, Color bodyColor, Color headColor) {
+    BOUND_X = gamePane.getPrefWidth();
+    BOUND_Y = gamePane.getPrefHeight();
+    gamePane.setStyle("-fx-background-color: #0F0F0F;");
+
     this.name = name;
 
-    this.snake = new Snake(bodyColor, headColor, gamePane.getPrefWidth(), gamePane.getPrefHeight());
+    this.snake = new Snake(bodyColor, headColor);
     snake.draw(gamePane);
 
     this.fruits = new ArrayList<>();
-    for (int i = 0; i < NUM_FRUITS; i++) {
-      int x = ((int) (Math.random() * (gamePane.getPrefWidth() / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2;
-      int y = ((int) (Math.random() * (gamePane.getPrefHeight() / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2;
+    for(int i = 0; i < NUM_FRUITS; i++) {
+      Fruit fruit = new Fruit(((int) (Math.random() * (BOUND_X / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2,
+                              ((int) (Math.random() * (BOUND_Y / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2,
+                                 Type.NORMAL);
 
-      this.fruits.add(new Circle(x, y, Fruit.RADIUS, Fruit.COLOR));
+      // Random chance Fruit becomes special
+      if ((Math.random() * 100) < SPECIAL_FRUIT_CHANCE) {
+        fruit.setType(Type.SPECIAL);
+      } else {
+        fruit.setType(Type.NORMAL);
+      }
+
+      fruits.add(fruit);
+      fruit.draw(gamePane);
     }
-    gamePane.getChildren().addAll(fruits);
-
-    gamePane.setStyle("-fx-background-color: #0F0F0F;");
 
     timeline = new Timeline();
     timeline.setCycleCount(Timeline.INDEFINITE);
@@ -75,11 +90,10 @@ public class GameController {
         }
       }
 
-      // Check if Snake collides with fruits
-      for (Circle fruit : fruits) {
-        if (snake.ateFruit(fruit)) {
+      for (Fruit fruit : fruits) {
+        if (snake.onPoint(fruit.getX(), fruit.getY())) {
           // Increase Score
-          score.setText("Score: " + (Integer.parseInt(score.getText().substring(7)) + 1));
+          score.setText("Score: " + (Integer.parseInt(score.getText().substring(7)) + fruit.getValue()));
 
           // Grow the Snake
           snake.grow();
@@ -89,14 +103,22 @@ public class GameController {
 
           // Move fruit, ensuring the new location is not occupied by the snake
           do {
-            fruit.setCenterX(((int) (Math.random() * (gamePane.getPrefWidth() / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2f);
-            fruit.setCenterY(((int) (Math.random() * (gamePane.getPrefHeight() / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2f);
+            fruit.setPosition(((int) (Math.random() * (BOUND_X / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2.0,
+                              ((int) (Math.random() * (BOUND_Y / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2.0);
           }
-          while (snake.onPoint(fruit.getCenterX(), fruit.getCenterY()));
+          while (snake.onPoint(fruit.getX(), fruit.getY()));
+
+          // Random chance Fruit becomes special
+          if ((Math.random() * 100) < SPECIAL_FRUIT_CHANCE) {
+            fruit.setType(Type.SPECIAL);
+          } else {
+            fruit.setType(Type.NORMAL);
+          }
         }
       }
     }));
 
+    // Game Timer
     timer = new AnimationTimer() {
       private final long startTime = System.currentTimeMillis();
 

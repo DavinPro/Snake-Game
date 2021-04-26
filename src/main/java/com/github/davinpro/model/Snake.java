@@ -1,5 +1,7 @@
 package com.github.davinpro.model;
 
+import static com.github.davinpro.viewmodel.GameController.BOUND_X;
+import static com.github.davinpro.viewmodel.GameController.BOUND_Y;
 import static com.github.davinpro.viewmodel.GameController.GRID_SIZE;
 
 import java.util.ArrayList;
@@ -28,9 +30,6 @@ public class Snake {
   private final Color headColor;
   private final List<Circle> body;
 
-  private final double boundX;
-  private final double boundY;
-
   private boolean grow = false;
 
   /**
@@ -38,21 +37,17 @@ public class Snake {
    *
    * @param bodyColor The {@link Color} to use when drawing the Snake body
    * @param headColor The {@link Color} to use when drawing the Snake head
-   * @param boundX    The bound in the x direction this Snake can move to without colliding
-   * @param boundY    The bound in the y direction this Snake can move to without colliding
    */
-  public Snake(Color bodyColor, Color headColor, double boundX, double boundY) {
+  public Snake(Color bodyColor, Color headColor) {
     this.bodyColor = bodyColor;
     this.headColor = headColor;
-    this.boundX = boundX;
-    this.boundY = boundY;
     this.body = new ArrayList<>();
 
     // Calculate starting position, adjust for body segment radius if needed
-    double x = boundX / 2;
+    double x = BOUND_X / 2;
     if (x % 20 == 0) { x += SEGMENT_RADIUS; }
 
-    double y = boundY / 2;
+    double y = BOUND_Y / 2;
     if (y % 20 == 0) { y += SEGMENT_RADIUS; }
 
 
@@ -124,8 +119,8 @@ public class Snake {
     double x = body.get(0).getCenterX();
     double y = body.get(0).getCenterY();
 
-    if (x < SEGMENT_RADIUS || x > boundX-SEGMENT_RADIUS ||
-        y < SEGMENT_RADIUS || y > boundY-SEGMENT_RADIUS) {
+    if (x < SEGMENT_RADIUS || x > BOUND_X-SEGMENT_RADIUS ||
+        y < SEGMENT_RADIUS || y > BOUND_Y-SEGMENT_RADIUS) {
       return true;
     }
 
@@ -151,16 +146,6 @@ public class Snake {
       }
     }
     return false;
-  }
-
-  /**
-   * A method to determine if the head of this {@link Snake} is on a fruit.
-   *
-   * @param fruit The fruit to check
-   * @return true if the head of this {@link Snake} is on the fruit.
-   */
-  public boolean ateFruit(Circle fruit) {
-    return body.get(0).getCenterX() == fruit.getCenterX() && body.get(0).getCenterY() == fruit.getCenterY();
   }
 
   public boolean isChangingDir() {
