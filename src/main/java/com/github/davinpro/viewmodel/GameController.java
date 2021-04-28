@@ -1,8 +1,8 @@
 package com.github.davinpro.viewmodel;
 
 import static com.github.davinpro.App.getLoader;
-import static com.github.davinpro.App.setRoot;
 
+import com.github.davinpro.App;
 import com.github.davinpro.SoundManager;
 import com.github.davinpro.SoundManager.Sound;
 import com.github.davinpro.model.Fruit;
@@ -16,11 +16,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class GameController {
@@ -178,12 +180,17 @@ public class GameController {
     SoundManager.fadeInPlay(Sound.MENU_MUSIC, 15);
 
     FXMLLoader loader = getLoader("EndScreen");
-    Parent root = loader.load();
-    setRoot(root);
+    Stage popupStage = new Stage();
+    popupStage.initModality(Modality.APPLICATION_MODAL);
+    popupStage.initOwner(App.getStage());
+    popupStage.initStyle(StageStyle.UNDECORATED);
+    popupStage.setScene(new Scene(loader.load()));
 
     EndScreenController endScreen = loader.getController();
     endScreen.setName(name.isBlank() ? "Player 1" : name);
     endScreen.setScore(score.getText().substring(7));
     endScreen.setTime(timeLabel.getText());
+
+    popupStage.show();
   }
 }

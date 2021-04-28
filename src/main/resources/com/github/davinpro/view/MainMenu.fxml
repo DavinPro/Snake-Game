@@ -3,9 +3,10 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@/com/github/davinpro/style sheets/darkmode.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.davinpro.viewmodel.MainMenuController">
+<VBox alignment="CENTER" prefHeight="670.0" prefWidth="600.0" stylesheets="@/com/github/davinpro/style sheets/darkmode.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.davinpro.viewmodel.MainMenuController">
    <Label alignment="CENTER" layoutX="161.0" layoutY="26.0" text="Snake Game" textAlignment="CENTER" textFill="#0c8618">
       <font>
          <Font name="System Bold" size="48.0" />
@@ -14,20 +15,49 @@
          <Insets bottom="100.0" />
       </VBox.margin>
    </Label>
+  <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
+    <columnConstraints>
+      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0"
+        prefWidth="295.0"/>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="354.0" minWidth="10.0" prefWidth="295.0"/>
+    </columnConstraints>
+    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <VBox.margin>
+      <Insets right="60.0"/>
+    </VBox.margin>
+    <Label text="Name" textFill="#eeeeee"/>
+    <Label text="Body Color" textFill="#eeeeee" GridPane.rowIndex="1"/>
+    <Label text="Head Color" textFill="#eeeeee" GridPane.rowIndex="2"/>
+    <TextField fx:id="txtfName" maxWidth="125.0" promptText="Player 1" GridPane.columnIndex="1"/>
+    <ColorPicker fx:id="bodyColorPicker" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <value>
+        <Color red="0.0235294122248888" green="0.7607843279838562" blue="0.19607843458652496"/>
+      </value>
+    </ColorPicker>
+    <ColorPicker fx:id="headColorPicker" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <value>
+        <Color red="0.9394736886024475"/>
+      </value>
+    </ColorPicker>
+  </GridPane>
    <Button layoutX="229.0" layoutY="175.0" mnemonicParsing="false" onAction="#openOptions" prefHeight="50.0" prefWidth="142.0" text="Options" textAlignment="CENTER">
       <font>
          <Font size="18.0" />
       </font>
       <VBox.margin>
-         <Insets bottom="50.0" />
+         <Insets bottom="25.0" top="75.0" />
       </VBox.margin>
    </Button>
-   <Button layoutX="229.0" layoutY="251.0" mnemonicParsing="false" onAction="#switchToSetup" prefHeight="50.0" prefWidth="142.0" text="Play">
+   <Button layoutX="229.0" layoutY="251.0" mnemonicParsing="false" onAction="#startGame" prefHeight="50.0" prefWidth="142.0" text="Play">
       <font>
          <Font size="18.0" />
       </font>
       <VBox.margin>
-         <Insets bottom="50.0" />
+         <Insets bottom="25.0" />
       </VBox.margin>
    </Button>
 </VBox>

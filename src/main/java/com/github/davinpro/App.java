@@ -15,11 +15,15 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    private static Stage stage;
 
     @Override
     public void start(Stage stage) throws IOException {
+        App.stage = stage;
+
         scene = new Scene(loadFXML("MainMenu"), 640, 480);
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
 
         SoundManager.fadeInPlay(Sound.MENU_MUSIC, 10);
@@ -43,6 +47,10 @@ public class App extends Application {
 
     public static Scene getScene() {
         return scene;
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 
     public static void main(String[] args) {
