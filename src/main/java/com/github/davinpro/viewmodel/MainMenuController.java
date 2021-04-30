@@ -49,4 +49,9 @@ public class MainMenuController {
 
     SoundManager.stop(Sound.MENU_MUSIC);
   }
+
+  public void switchToHighscores() throws IOException {
+    setRoot("Highscores");
+    SoundManager.play(Sound.BUTTON_PRESS);
+  }
 }

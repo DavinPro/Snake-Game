@@ -9,6 +9,9 @@ import com.github.davinpro.model.Fruit;
 import com.github.davinpro.model.Fruit.Type;
 import com.github.davinpro.model.Snake;
 import com.github.davinpro.model.Snake.Direction;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
@@ -186,11 +189,29 @@ public class GameController {
     popupStage.initStyle(StageStyle.UNDECORATED);
     popupStage.setScene(new Scene(loader.load()));
 
+    String scoreStr = score.getText().substring(7);
+
     EndScreenController endScreen = loader.getController();
     endScreen.setName(name.isBlank() ? "Player 1" : name);
-    endScreen.setScore(score.getText().substring(7));
+    endScreen.setScore(scoreStr);
     endScreen.setTime(timeLabel.getText());
 
     popupStage.show();
+
+    String path;
+    // Save score
+    try {
+      path = new File("./src/main/java/com/github/davinpro").getCanonicalPath();
+      BufferedWriter bufferedWriter =
+          new BufferedWriter(new FileWriter(path + "/Scores.txt", true));
+
+      bufferedWriter.write((name.isBlank() ? "Player 1" : name) + ":" + scoreStr + ":" + timeLabel.getText());
+      bufferedWriter.newLine();
+
+      bufferedWriter.close();
+    }
+    catch(IOException ex) {
+        ex.printStackTrace();
+    }
   }
 }

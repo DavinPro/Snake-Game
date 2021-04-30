@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="CENTER" prefHeight="670.0" prefWidth="600.0" stylesheets="@/com/github/davinpro/style sheets/darkmode.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.davinpro.viewmodel.Highscores">
+  <VBox alignment="CENTER" prefHeight="670.0" prefWidth="400.0">
+    <TableView fx:id="scoresTable" prefHeight="545.0" prefWidth="400.0">
+      <columns>
+        <TableColumn fx:id="nameColumn" editable="false" prefWidth="146.0" resizable="false" text="Name" />
+        <TableColumn fx:id="scoreColumn" editable="false" prefWidth="124.0" resizable="false" text="Score" />
+        <TableColumn fx:id="timeColumn" editable="false" maxWidth="128.0" prefWidth="123.0" resizable="false" text="Time" />
+      </columns>
+    </TableView>
+      <Button mnemonicParsing="false" onAction="#switchToMainMenu" text="Menu">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Button>
+  </VBox>
+</HBox>

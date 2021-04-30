@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
@@ -17,30 +18,29 @@
    </Label>
   <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
     <columnConstraints>
-      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0"
-        prefWidth="295.0"/>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="354.0" minWidth="10.0" prefWidth="295.0"/>
+      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="298.0" minWidth="10.0" prefWidth="295.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="354.0" minWidth="10.0" prefWidth="295.0" />
     </columnConstraints>
     <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <VBox.margin>
-      <Insets right="60.0"/>
+      <Insets right="60.0" />
     </VBox.margin>
-    <Label text="Name" textFill="#eeeeee"/>
-    <Label text="Body Color" textFill="#eeeeee" GridPane.rowIndex="1"/>
-    <Label text="Head Color" textFill="#eeeeee" GridPane.rowIndex="2"/>
-    <TextField fx:id="txtfName" maxWidth="125.0" promptText="Player 1" GridPane.columnIndex="1"/>
+    <Label text="Name" textFill="#eeeeee" />
+    <Label text="Body Color" textFill="#eeeeee" GridPane.rowIndex="1" />
+    <Label text="Head Color" textFill="#eeeeee" GridPane.rowIndex="2" />
+    <TextField fx:id="txtfName" maxWidth="125.0" promptText="Player 1" GridPane.columnIndex="1" />
     <ColorPicker fx:id="bodyColorPicker" GridPane.columnIndex="1" GridPane.rowIndex="1">
       <value>
-        <Color red="0.0235294122248888" green="0.7607843279838562" blue="0.19607843458652496"/>
+        <Color red="0.0235294122248888" green="0.7607843279838562" blue="0.19607843458652496" />
       </value>
     </ColorPicker>
     <ColorPicker fx:id="headColorPicker" GridPane.columnIndex="1" GridPane.rowIndex="2">
       <value>
-        <Color red="0.9394736886024475"/>
+        <Color red="0.9394736886024475" />
       </value>
     </ColorPicker>
   </GridPane>
@@ -60,4 +60,13 @@
          <Insets bottom="25.0" />
       </VBox.margin>
    </Button>
+   <Button mnemonicParsing="false" onAction="#switchToHighscores" prefHeight="50.0" prefWidth="50.0">
+      <graphic>
+        <ImageView fitHeight="68.0" fitWidth="92.0" pickOnBounds="true" preserveRatio="true">
+          <Image url="@../images/highscores.png" />
+        </ImageView>
+      </graphic>
+      <VBox.margin>
+         <Insets />
+      </VBox.margin></Button>
 </VBox>
