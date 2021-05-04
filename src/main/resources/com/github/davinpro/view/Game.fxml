@@ -18,6 +18,12 @@
             </font>
          </Label>
       </AnchorPane>
-      <Pane fx:id="gamePane" prefHeight="800.0" prefWidth="800.0" />
+      <Pane fx:id="gamePane" prefHeight="800.0" prefWidth="800.0">
+         <children>
+            <Label fx:id="gameOverLabel" layoutX="374.0" layoutY="393.0" text="Game Over" textFill="#0c8618" visible="false">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font></Label>
+         </children></Pane>
    </VBox>
 </HBox>

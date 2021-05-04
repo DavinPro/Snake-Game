@@ -1,7 +1,5 @@
 package com.github.davinpro.viewmodel;
 
-import static com.github.davinpro.App.getLoader;
-
 import com.github.davinpro.App;
 import com.github.davinpro.SoundManager;
 import com.github.davinpro.SoundManager.Sound;
@@ -18,15 +16,13 @@ import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class GameController {
@@ -39,6 +35,9 @@ public class GameController {
 
   @FXML
   Label timeLabel;
+
+  @FXML
+  Label gameOverLabel;
 
   public static boolean WALLS_ENABLED = false;
   public static double BOUND_X = 0.0;
@@ -243,30 +242,33 @@ public class GameController {
     SoundManager.play(Sound.GAME_OVER);
     SoundManager.fadeInPlay(Sound.MENU_MUSIC, 15);
 
-    FXMLLoader loader = getLoader("EndScreen");
-    Stage popupStage = new Stage();
-    popupStage.initModality(Modality.APPLICATION_MODAL);
-    popupStage.initOwner(App.getStage());
-    popupStage.initStyle(StageStyle.UNDECORATED);
-    popupStage.setScene(new Scene(loader.load()));
+    gamePane.getChildren().remove(gameOverLabel);
+    gamePane.getChildren().add(gameOverLabel);
 
-    String scoreStr = score.getText().substring(7);
+    DoubleProperty scale = new SimpleDoubleProperty(1);
+    gameOverLabel.scaleXProperty().bind(scale);
+    gameOverLabel.scaleYProperty().bind(scale);
+    gameOverLabel.setVisible(true);
+    timeline = new Timeline(
+        new KeyFrame(Duration.millis(16), event -> scale.setValue(scale.getValue() + 0.05))
+    );
+    timeline.setCycleCount(240);
+    timeline.setOnFinished(event -> {
+      try {
+        App.setRoot("MainMenu");
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
+    timeline.play();
 
-    EndScreenController endScreen = loader.getController();
-    endScreen.setName(name.isBlank() ? "Player 1" : name);
-    endScreen.setScore(scoreStr);
-    endScreen.setTime(timeLabel.getText());
-
-    popupStage.show();
-
-    String path;
     // Save score
     try {
-      path = new File("./src/main/java/com/github/davinpro").getCanonicalPath();
+      String path = new File("./src/main/java/com/github/davinpro").getCanonicalPath();
       BufferedWriter bufferedWriter =
           new BufferedWriter(new FileWriter(path + "/Scores.txt", true));
 
-      bufferedWriter.write((name.isBlank() ? "Player 1" : name) + ":" + scoreStr + ":" + timeLabel.getText());
+      bufferedWriter.write((name.isBlank() ? "Player 1" : name) + ":" + score.getText().substring(7) + ":" + timeLabel.getText());
       bufferedWriter.newLine();
 
       bufferedWriter.close();
