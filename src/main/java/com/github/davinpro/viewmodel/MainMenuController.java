@@ -11,6 +11,7 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
@@ -27,6 +28,9 @@ public class MainMenuController {
   ColorPicker headColorPicker;
 
   @FXML
+  CheckBox wallsCheckBox;
+
+  @FXML
   public void openOptions() throws IOException {
     SoundManager.play(Sound.BUTTON_PRESS);
     App.setRoot("Options");
@@ -39,6 +43,7 @@ public class MainMenuController {
     String name = txtfName.getText();
     Color bodyColor = bodyColorPicker.getValue();
     Color headColor = headColorPicker.getValue();
+    GameController.WALLS_ENABLED = wallsCheckBox.isSelected();
 
     FXMLLoader loader = getLoader("Game");
     Parent root = loader.load();

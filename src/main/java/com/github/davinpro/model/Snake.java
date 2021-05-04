@@ -45,10 +45,10 @@ public class Snake {
 
     // Calculate starting position, adjust for body segment radius if needed
     double x = BOUND_X / 2;
-    if (x % 20 == 0) { x += SEGMENT_RADIUS; }
+    if (x % GRID_SIZE == 0) { x += SEGMENT_RADIUS; }
 
     double y = BOUND_Y / 2;
-    if (y % 20 == 0) { y += SEGMENT_RADIUS; }
+    if (y % GRID_SIZE == 0) { y += SEGMENT_RADIUS; }
 
 
     // Element 0 of the body is the snake's head
@@ -141,7 +141,11 @@ public class Snake {
    */
   public boolean onPoint(double x, double y) {
     for (int i = 1; i < body.size() - 1; i++) {
-      if (body.get(i).getCenterX() == x && body.get(i).getCenterY() == y) {
+      double a = Math.abs(body.get(i).getCenterX() - x);
+      double b = Math.abs(body.get(i).getCenterY() - y);
+      double c = Math.sqrt((a*a + b*b));
+
+      if (c <= SEGMENT_RADIUS) {
         return true;
       }
     }

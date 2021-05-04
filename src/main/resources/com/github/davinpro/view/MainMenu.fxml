@@ -25,6 +25,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <VBox.margin>
       <Insets right="60.0" />
@@ -43,6 +44,8 @@
         <Color red="0.9394736886024475" />
       </value>
     </ColorPicker>
+      <CheckBox fx:id="wallsCheckBox" mnemonicParsing="false" text="CheckBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label text="Enable Walls" textFill="#eeeeee" GridPane.rowIndex="3" />
   </GridPane>
    <Button layoutX="229.0" layoutY="175.0" mnemonicParsing="false" onAction="#openOptions" prefHeight="50.0" prefWidth="142.0" text="Options" textAlignment="CENTER">
       <font>

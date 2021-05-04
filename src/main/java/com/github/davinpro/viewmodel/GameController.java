@@ -9,6 +9,7 @@ import com.github.davinpro.model.Fruit;
 import com.github.davinpro.model.Fruit.Type;
 import com.github.davinpro.model.Snake;
 import com.github.davinpro.model.Snake.Direction;
+import com.github.davinpro.model.Wall;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -39,10 +40,12 @@ public class GameController {
   @FXML
   Label timeLabel;
 
+  public static boolean WALLS_ENABLED = false;
   public static double BOUND_X = 0.0;
   public static double BOUND_Y = 0.0;
   public static final int GRID_SIZE = 20;
   private static final int NUM_FRUITS = 4;
+  private static final int NUM_WALLS = 30;
 
   // Percent chance a special fruit will spawn
   private static final int SPECIAL_FRUIT_CHANCE = 10;
@@ -53,6 +56,7 @@ public class GameController {
   private String name;
   private Snake snake;
   private ArrayList<Fruit> fruits;
+  private ArrayList<Wall> walls;
 
   public void initialize(String name, Color bodyColor, Color headColor) {
     BOUND_X = gamePane.getPrefWidth();
@@ -81,6 +85,49 @@ public class GameController {
       fruit.draw(gamePane);
     }
 
+    if (WALLS_ENABLED) {
+      System.out.println("Creating walls...");
+      this.walls = new ArrayList<>();
+      for (int i = 0; i < NUM_WALLS; i++) {
+        // Find a location to start wall
+        double x, y;
+        do {
+          x = ((int) (Math.random() * (BOUND_X / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2f;
+          y = ((int) (Math.random() * (BOUND_Y / GRID_SIZE))) * GRID_SIZE + GRID_SIZE/2f;
+        } while (snake.onPoint(x, y) || onFruit(x, y) || onWall(x, y));
+        Wall w = new Wall(x, y);
+        walls.add(w);
+        w.draw(gamePane);
+
+        // Find locations around start location for wall segments
+        int numWallSegs = (int) (Math.random()*5);
+
+        for(int j = 0; j < numWallSegs; j++) {
+
+          // Choose location adjacent to current location
+          double direction = Math.random();
+          if (direction < 0.25) {
+            x -= GRID_SIZE;
+          }
+          else if (direction < 0.5) {
+            x += GRID_SIZE;
+          }
+          else if (direction < 0.75) {
+            y -= GRID_SIZE;
+          }
+          else if (direction < 1.0) {
+            y += GRID_SIZE;
+          }
+
+          if (inBounds(x, y) && !snake.onPoint(x, y) && !onFruit(x, y) && !onWall(x, y)) {
+            w = new Wall(x, y);
+            walls.add(w);
+            w.draw(gamePane);
+          }
+        }
+      }
+    }
+
     timeline = new Timeline();
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.getKeyFrames().add(new KeyFrame(Duration.millis(125), event -> {
@@ -95,6 +142,7 @@ public class GameController {
         }
       }
 
+      // Check collisions with Fruits
       for (Fruit fruit : fruits) {
         if (snake.onPoint(fruit.getX(), fruit.getY())) {
           // Increase Score
@@ -118,6 +166,19 @@ public class GameController {
             fruit.setType(Type.SPECIAL);
           } else {
             fruit.setType(Type.NORMAL);
+          }
+        }
+      }
+
+      // Check collisions with walls
+      if (WALLS_ENABLED) {
+        for (Wall wall : walls) {
+          if (snake.onPoint(wall.getX(), wall.getY())) {
+            try {
+              endGame();
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
           }
         }
       }
@@ -213,5 +274,35 @@ public class GameController {
     catch(IOException ex) {
         ex.printStackTrace();
     }
+  }
+
+  private boolean inBounds(double x, double y) {
+    return x > 0 && x < BOUND_X && y > 0 && y < BOUND_Y;
+  }
+
+  private boolean onWall(double x, double y) {
+    for (Wall w : walls) {
+      double a = Math.abs(w.getX() - x);
+      double b = Math.abs(w.getY() - y);
+      double c = Math.sqrt((a*a + b*b));
+
+      if (c < GRID_SIZE) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean onFruit(double x, double y) {
+    for (Fruit f : fruits) {
+      double a = Math.abs(f.getX() - x);
+      double b = Math.abs(f.getY() - y);
+      double c = Math.sqrt((a*a + b*b));
+
+      if (c <= Fruit.RADIUS) {
+        return true;
+      }
+    }
+    return false;
   }
 }

@@ -1,3 +1,0 @@
-Billy:6:0m 12.9s
-Tim:24:0m 46.0s
-Player 1:28:1m 15.4s
