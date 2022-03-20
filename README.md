@@ -4,6 +4,10 @@
 </h1>
 
 <h4 align="center">A personalized version of the classic snake game written in java.</h4>
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/70703647/159144143-2f4955bf-28cd-4c1a-a3d8-011409fbbb87.jpg" width="600"/>
+</div>
+
 <br>
 <p align="center">
   <a href="#key-features">Key Features</a> •
