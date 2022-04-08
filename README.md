@@ -12,8 +12,7 @@
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#technology">Technology</a> •
-  <a href="#how-to-use">How To Use</a> •
-  <a href="#in-progress">In Progress</a>
+  <a href="#how-to-use">How To Use</a>
 </p>
 
 
