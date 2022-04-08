@@ -39,7 +39,3 @@ An IDE such as [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) as well
 1. Clone the project - https://github.com/DavinPro/Snake-Game.git
 2. Compile the project using the maven-compiler-plugin
 3. Run `src/main/java/com/github/davinpro/App.java` using the javafx-maven-plugin
-
-## In Progress
-
-Currently working on adding more game modes, options, and an creating an installable version of the game.
